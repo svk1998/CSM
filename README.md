@@ -95,6 +95,13 @@ docker compose down
 ## Operations
 
 - Operator runbook: `docs/OPERATOR_GUIDE.md`
+- Wiki-ready project docs: `docs/wiki/Home.md`
+
+## Documentation strategy
+
+- Recommended long-term publishing target: GitHub Pages
+- Short-term editable structure: `docs/wiki/`
+- If you enable the GitHub Wiki feature later, the files in `docs/wiki/` are already named and structured to copy over directly
 
 ## Source references
 
