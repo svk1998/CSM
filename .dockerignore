@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log*
+logs
+.env
+.dist
+codespace-architecture.excalidraw
+docker-compose*.yml
+README.md

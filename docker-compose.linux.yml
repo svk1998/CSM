@@ -1,0 +1,78 @@
+services:
+  app:
+    build: .
+    container_name: csm-app
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=csmanager
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      - POSTGRES_DB=csmanager
+      - SESSION_SECRET=${SESSION_SECRET:?Set SESSION_SECRET in .env}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
+      - TRUST_PROXY=${TRUST_PROXY:-loopback}
+      - COOKIE_SECURE=${COOKIE_SECURE:-false}
+      - WORKSPACE_TRUSTED_ORIGINS=${WORKSPACE_TRUSTED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+      - DOCKER_SOCKET=/var/run/docker.sock
+      - DOCKER_NETWORK_NAME=csm-network
+      - WORKSPACE_PROXY_MODE=network
+      - WORKSPACE_STORAGE_MODE=${WORKSPACE_STORAGE_MODE:-named-volume}
+      - WORKSPACE_BASE_PATH=${WORKSPACE_BASE_PATH:-/workspaces}
+      - CODE_SERVER_IMAGE=${CODE_SERVER_IMAGE:-codercom/code-server:4.111.0}
+      - DEFAULT_CPU_SHARES=1024
+      - DEFAULT_MEMORY_MB=2048
+      - PORT_RANGE_START=10000
+      - PORT_RANGE_END=10999
+      - IDLE_TIMEOUT_MINUTES=60
+      - CLEANUP_INTERVAL_MINUTES=10
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/app/logs
+    group_add:
+      - "${DOCKER_GID:-999}"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then((res) => { if (!res.ok) process.exit(1); }).catch(() => process.exit(1));"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - csm-internal
+      - csm-workspaces
+
+  db:
+    image: postgres:16-alpine
+    container_name: csm-db
+    environment:
+      - POSTGRES_USER=csmanager
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      - POSTGRES_DB=csmanager
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U csmanager"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - csm-internal
+
+networks:
+  csm-internal:
+    driver: bridge
+  csm-workspaces:
+    name: csm-network
+    driver: bridge
+
+volumes:
+  pgdata:
