@@ -1,4 +1,10 @@
-# Data Model
+---
+title: Data Model
+nav_order: 7
+kicker: Persistence Layer
+description: Review the PostgreSQL tables used for users, workspaces, and session storage.
+permalink: /data-model/
+---
 
 The app uses three PostgreSQL tables created in `src/db.js`.
 

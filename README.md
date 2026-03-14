@@ -96,6 +96,7 @@ docker compose down
 
 - Operator runbook: `docs/OPERATOR_GUIDE.md`
 - Wiki-ready project docs: `docs/wiki/Home.md`
+- Published docs site: `https://svk1998.github.io/CSM/`
 
 ## Documentation strategy
 

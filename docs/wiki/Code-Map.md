@@ -1,4 +1,10 @@
-# Code Map
+---
+title: Code Map
+nav_order: 6
+kicker: Repository Guide
+description: Map repository files to the responsibilities they own in the running system.
+permalink: /code-map/
+---
 
 This page maps the repository to responsibilities.
 

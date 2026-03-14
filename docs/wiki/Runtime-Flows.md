@@ -1,4 +1,10 @@
-# Runtime Flows
+---
+title: Runtime Flows
+nav_order: 5
+kicker: Execution Paths
+description: Walk through startup, login, provisioning, proxying, and workspace cleanup flows.
+permalink: /runtime-flows/
+---
 
 ## Application startup
 

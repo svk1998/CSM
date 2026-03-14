@@ -1,4 +1,10 @@
-# System Overview
+---
+title: System Overview
+nav_order: 3
+kicker: Product Scope
+description: Understand the problem CodeSpace Manager solves, the main actors, and the boundaries between app, workspaces, and data.
+permalink: /system-overview/
+---
 
 ## Purpose
 
@@ -72,4 +78,3 @@ The default production model is:
 - Admin and user sessions are intentionally separate concerns.
 - Admin accounts are management-only accounts, not development workspaces.
 - Workspace WebSocket access depends on correct proxy headers and trusted origins.
-

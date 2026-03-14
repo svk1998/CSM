@@ -1,4 +1,11 @@
-# Deployment and Operations
+---
+title: Deployment and Operations
+nav_title: Deployment
+nav_order: 9
+kicker: Production Hosting
+description: Review the recommended deployment shape, critical environment variables, data persistence, and maintenance checklist.
+permalink: /deployment-and-operations/
+---
 
 ## Recommended deployment shape
 
@@ -97,4 +104,4 @@ Back up:
 
 ## Existing runbook
 
-For day-2 command examples, see `docs/OPERATOR_GUIDE.md`.
+For day-2 command examples, see the [Operator Guide]({{ '/operator-guide/' | relative_url }}).

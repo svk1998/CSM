@@ -1,0 +1,19 @@
+title: CodeSpace Manager Docs
+description: Architecture, runtime, operations, and publishing docs for CodeSpace Manager.
+url: https://svk1998.github.io
+baseurl: /CSM
+markdown: kramdown
+kramdown:
+  input: GFM
+highlighter: rouge
+permalink: pretty
+repository_url: https://github.com/svk1998/CSM
+release_url: https://github.com/svk1998/CSM/releases/tag/v1.0.0
+exclude:
+  - wiki/_Sidebar.md
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default

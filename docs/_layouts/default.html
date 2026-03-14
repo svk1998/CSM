@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  </head>
+  <body>
+    {% assign nav_pages = site.pages | sort: 'nav_order' %}
+    <div class="site-shell">
+      <aside class="site-sidebar">
+        <a class="site-brand" href="{{ '/' | relative_url }}">
+          <span class="site-brand__mark">CSM</span>
+          <span class="site-brand__text">CodeSpace Manager</span>
+        </a>
+        <p class="site-tagline">{{ site.description }}</p>
+
+        <nav class="site-nav" aria-label="Documentation">
+          {% for item in nav_pages %}
+            {% unless item.nav_exclude %}
+              <a class="site-nav__link{% if page.url == item.url %} is-active{% endif %}" href="{{ item.url | relative_url }}">
+                {{ item.nav_title | default: item.title }}
+              </a>
+            {% endunless %}
+          {% endfor %}
+        </nav>
+
+        <div class="site-sidebar__meta">
+          <a href="{{ site.repository_url }}">Repository</a>
+          <a href="{{ site.release_url }}">Release v1.0.0</a>
+        </div>
+      </aside>
+
+      <main class="site-main">
+        <header class="page-header">
+          {% if page.kicker %}
+            <p class="page-kicker">{{ page.kicker }}</p>
+          {% endif %}
+          <h1>{{ page.title }}</h1>
+          {% if page.description %}
+            <p class="page-description">{{ page.description }}</p>
+          {% endif %}
+        </header>
+
+        <article class="page-content">
+          {{ content }}
+        </article>
+
+        <footer class="page-footer">
+          <p>Docs publish from <code>main:/docs</code> on GitHub Pages.</p>
+        </footer>
+      </main>
+    </div>
+
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: "neutral",
+        fontFamily: "Aptos, Segoe UI, Trebuchet MS, sans-serif"
+      });
+
+      const diagramBlocks = document.querySelectorAll("pre code.language-mermaid");
+
+      diagramBlocks.forEach((codeBlock) => {
+        const diagram = document.createElement("div");
+        diagram.className = "mermaid";
+        diagram.textContent = codeBlock.textContent;
+        codeBlock.parentElement.replaceWith(diagram);
+      });
+
+      if (diagramBlocks.length > 0) {
+        await mermaid.run({ querySelector: ".mermaid" });
+      }
+    </script>
+  </body>
+</html>

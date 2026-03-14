@@ -1,18 +1,25 @@
-# CodeSpace Manager Wiki
+---
+title: Maintainer Guide
+nav_title: Maintainer Guide
+nav_order: 2
+kicker: Maintainer Onboarding
+description: Use this page as the quick project map before diving into architecture, runtime, and operations.
+permalink: /maintainer-guide/
+---
 
 CodeSpace Manager is a multi-user control plane for `code-server`. It gives an administrator one place to manage users, provision isolated workspaces, and proxy browser traffic into per-user containers.
 
-This wiki is written to help a new maintainer understand the project quickly.
+This guide is written to help a new maintainer understand the project quickly.
 
 ## Start here
 
-- [System Overview](System-Overview.md)
-- [Architecture](Architecture.md)
-- [Code Map](Code-Map.md)
-- [Runtime Flows](Runtime-Flows.md)
-- [Data Model](Data-Model.md)
-- [Deployment and Operations](Deployment-and-Operations.md)
-- [Publishing Docs](Publishing-Docs.md)
+- [System Overview]({{ '/system-overview/' | relative_url }})
+- [Architecture]({{ '/architecture/' | relative_url }})
+- [Code Map]({{ '/code-map/' | relative_url }})
+- [Runtime Flows]({{ '/runtime-flows/' | relative_url }})
+- [Data Model]({{ '/data-model/' | relative_url }})
+- [Deployment and Operations]({{ '/deployment-and-operations/' | relative_url }})
+- [Publishing Docs]({{ '/publishing-docs/' | relative_url }})
 
 ## What this project does
 
@@ -45,8 +52,8 @@ flowchart LR
 
 ## Recommended reading order
 
-1. [System Overview](System-Overview.md)
-2. [Architecture](Architecture.md)
-3. [Runtime Flows](Runtime-Flows.md)
-4. [Code Map](Code-Map.md)
-5. [Deployment and Operations](Deployment-and-Operations.md)
+1. [System Overview]({{ '/system-overview/' | relative_url }})
+2. [Architecture]({{ '/architecture/' | relative_url }})
+3. [Runtime Flows]({{ '/runtime-flows/' | relative_url }})
+4. [Code Map]({{ '/code-map/' | relative_url }})
+5. [Deployment and Operations]({{ '/deployment-and-operations/' | relative_url }})

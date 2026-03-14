@@ -1,4 +1,10 @@
-# Architecture
+---
+title: Architecture
+nav_order: 4
+kicker: Request and Component Design
+description: See how browser requests move through the app, database, Docker lifecycle, and workspace proxy.
+permalink: /architecture/
+---
 
 ## Main components
 

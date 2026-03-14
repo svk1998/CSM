@@ -1,4 +1,10 @@
-# Operator Guide
+---
+title: Operator Guide
+nav_order: 8
+kicker: Day-2 Operations
+description: Runbook for starting, stopping, checking, and maintaining a CodeSpace Manager deployment.
+permalink: /operator-guide/
+---
 
 ## Purpose
 

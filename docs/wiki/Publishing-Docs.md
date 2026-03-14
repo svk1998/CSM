@@ -1,4 +1,10 @@
-# Publishing Docs
+---
+title: Publishing Docs
+nav_order: 10
+kicker: Documentation Strategy
+description: Understand why GitHub Pages is the right fit here and how this repository publishes its docs site.
+permalink: /publishing-docs/
+---
 
 ## Short answer
 
@@ -40,8 +46,8 @@ That makes repository-backed docs a stronger fit than a separate wiki repo.
 ### Best path
 
 1. keep documentation source in `docs/`
-2. use `docs/wiki/` as the initial information architecture
-3. publish the same material with GitHub Pages when you are ready
+2. use `docs/wiki/` as the maintainable authoring structure
+3. publish the same material from `main:/docs` on GitHub Pages
 
 ### Acceptable short-term path
 
@@ -49,9 +55,9 @@ That makes repository-backed docs a stronger fit than a separate wiki repo.
 2. copy the files from `docs/wiki/` into the wiki
 3. keep the repo copy as the source of truth
 
-## Current wiki status
+## Current status
 
-At the time this page was written, the repo's `.wiki.git` remote was not available, which strongly suggests the GitHub Wiki feature is not currently enabled for this repository.
+The repository docs now publish from GitHub Pages, which keeps documentation versioned alongside the code. The repo's `.wiki.git` remote was not available when the wiki-ready structure was created, which strongly suggested the GitHub Wiki feature was not enabled at that point.
 
 ## Source material
 
@@ -60,4 +66,3 @@ This recommendation also lines up with GitHub's own product boundaries:
 - GitHub says wikis are for repository documentation and long-form content
 - GitHub Pages is a static site hosting service that publishes directly from a repository
 - GitHub notes that if you need search engine indexing or a larger docs surface, Pages is the better fit
-
