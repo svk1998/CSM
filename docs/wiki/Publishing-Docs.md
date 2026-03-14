@@ -59,6 +59,8 @@ That makes repository-backed docs a stronger fit than a separate wiki repo.
 
 The repository docs now publish from GitHub Pages, which keeps documentation versioned alongside the code. The repo's `.wiki.git` remote was not available when the wiki-ready structure was created, which strongly suggested the GitHub Wiki feature was not enabled at that point.
 
+The repository also includes `.github/workflows/pages.yml`, so once GitHub Pages is enabled for this repository, pushes to `main` that touch `docs/` automatically rebuild the site.
+
 ## Source material
 
 This recommendation also lines up with GitHub's own product boundaries:
