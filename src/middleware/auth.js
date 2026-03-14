@@ -29,7 +29,7 @@ function requireAdmin(req, res, next) {
       return res.status(403).json({ error: 'Admin access required' });
     }
 
-    return res.redirect('/');
+    return res.redirect('/login?reason=admin');
   }
 
   return next();

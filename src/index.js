@@ -86,10 +86,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  if (req.session?.userId) {
-    return res.redirect('/');
-  }
-
   return res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
 });
 

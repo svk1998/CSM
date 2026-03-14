@@ -149,6 +149,41 @@
     button:hover { transform: translateY(-1px); }
     button:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
+    .button-row {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .session-panel {
+      display: none;
+      gap: 14px;
+    }
+
+    .session-panel.show {
+      display: grid;
+    }
+
+    .session-panel p {
+      margin-bottom: 0;
+    }
+
+    .session-meta {
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(6, 10, 16, 0.85);
+      border: 1px solid rgba(79, 209, 197, 0.12);
+      color: #b6f4ee;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
     .error {
       display: none;
       margin-top: 14px;
@@ -173,9 +208,9 @@
 </head>
 <body>
   <main class="shell">
-    <div class="eyebrow">Secure workspace gateway</div>
-    <h1>CodeSpace Manager</h1>
-    <p>Sign in to launch an isolated code-server workspace behind a single managed access layer.</p>
+    <div id="eyebrow" class="eyebrow">Secure workspace gateway</div>
+    <h1 id="pageTitle">CodeSpace Manager</h1>
+    <p id="pageDescription">Sign in to launch an isolated code-server workspace behind a single managed access layer.</p>
 
     <div class="terminal"><span class="prompt">$</span> connect workspace://codespace-manager</div>
 
@@ -191,20 +226,85 @@
       </div>
 
       <button id="submitButton" type="submit">Sign in</button>
-      <div id="errorBox" class="error" role="alert"></div>
     </form>
 
+    <section id="sessionPanel" class="session-panel" aria-live="polite">
+      <div id="sessionMeta" class="session-meta"></div>
+      <div class="button-row">
+        <button id="continueButton" type="button">Continue</button>
+        <button id="switchButton" class="secondary" type="button">Sign out to switch account</button>
+      </div>
+    </section>
+
+    <div id="errorBox" class="error" role="alert"></div>
     <div class="footer">Built for multi-user development teams</div>
   </main>
 
   <script>
+    const eyebrow = document.getElementById('eyebrow');
+    const pageTitle = document.getElementById('pageTitle');
+    const pageDescription = document.getElementById('pageDescription');
     const form = document.getElementById('loginForm');
     const button = document.getElementById('submitButton');
+    const sessionPanel = document.getElementById('sessionPanel');
+    const sessionMeta = document.getElementById('sessionMeta');
+    const continueButton = document.getElementById('continueButton');
+    const switchButton = document.getElementById('switchButton');
     const errorBox = document.getElementById('errorBox');
+    const query = new URLSearchParams(window.location.search);
+    const reason = query.get('reason');
+
+    function showError(message) {
+      errorBox.textContent = message;
+      errorBox.classList.add('show');
+    }
+
+    function hideError() {
+      errorBox.textContent = '';
+      errorBox.classList.remove('show');
+    }
+
+    function applySessionState(session) {
+      const destination = session.user.isAdmin ? '/admin' : '/workspace/';
+      const roleLabel = session.user.isAdmin ? 'administrator' : 'workspace user';
+
+      eyebrow.textContent = 'Session active';
+      pageTitle.textContent = `Signed in as ${session.user.username}`;
+      pageDescription.textContent = reason === 'admin' && !session.user.isAdmin
+        ? 'This browser is currently using a workspace-user session. Sign out to switch back to an administrator account.'
+        : `This browser is currently using a ${roleLabel} session. Continue where you left off or sign out to use another account.`;
+
+      form.style.display = 'none';
+      sessionPanel.classList.add('show');
+      sessionMeta.textContent = session.user.isAdmin
+        ? 'Administrator session detected. You can return to the control plane immediately.'
+        : 'Workspace session detected. To reach the admin panel again, sign out and log back in as an administrator.';
+      continueButton.textContent = session.user.isAdmin ? 'Go to admin' : 'Go to workspace';
+      continueButton.onclick = () => {
+        window.location.href = destination;
+      };
+    }
+
+    async function loadSessionState() {
+      const response = await fetch('/api/auth/session');
+      const session = await response.json();
+
+      if (session.authenticated) {
+        applySessionState(session);
+        return;
+      }
+
+      form.style.display = '';
+      sessionPanel.classList.remove('show');
+
+      if (reason === 'admin') {
+        showError('Admin access requires an administrator account. Sign out and log in again as admin.');
+      }
+    }
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      errorBox.classList.remove('show');
+      hideError();
       button.disabled = true;
       button.textContent = 'Signing in...';
 
@@ -225,11 +325,34 @@
 
         window.location.href = payload.redirect;
       } catch (error) {
-        errorBox.textContent = error.message;
-        errorBox.classList.add('show');
+        showError(error.message);
         button.disabled = false;
         button.textContent = 'Sign in';
       }
+    });
+
+    switchButton.addEventListener('click', async () => {
+      hideError();
+      switchButton.disabled = true;
+      continueButton.disabled = true;
+
+      try {
+        const response = await fetch('/api/auth/logout', { method: 'POST' });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload.error || 'Logout failed.');
+        }
+
+        window.location.href = '/login';
+      } catch (error) {
+        showError(error.message);
+        switchButton.disabled = false;
+        continueButton.disabled = false;
+      }
+    });
+
+    loadSessionState().catch((error) => {
+      showError(error.message || 'Failed to load session.');
     });
   </script>
 </body>
